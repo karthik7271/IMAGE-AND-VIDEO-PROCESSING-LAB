@@ -53,7 +53,13 @@ class Image():
                         pixel = (red << 16) | (green << 8) | blue
                         row.append(pixel)
                 f.read(row_padding)  
-                self.image_array.append(row)
+                
+            row_size = (self.width * self.bits_per_pixel // 8) + row_padding
+            self.image_size = row_size * self.height
+
+            # flip upright (BMP stores bottom to top)
+            self.image_array = np.flipud(self.image_array)
+    
 
             print("-------------------------------------------------")
             print("File name :", filename)
@@ -181,7 +187,7 @@ class Image():
 
 
 if __name__ == "__main__":
-    images = ["cameraman.bmp", "corn.bmp", "pepper.bmp"]
+    images = ["EXP_2/INPUT_IMAGES/cameraman.bmp", "EXP_2/INPUT_IMAGES/corn.bmp", "EXP_2/INPUT_IMAGES/pepper.bmp"]
     
     for img_path in images:
         print(f"\nProcessing: {img_path}")
